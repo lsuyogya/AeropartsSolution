@@ -1,8 +1,8 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { Divide as Hamburger } from "hamburger-react";
-import logo from "../../assets/images/SVGs/Logo-aeroparts.svg";
 import { Link, useNavigate } from "react-router";
 import Menu from "~/components/Menu";
+import logo from "../../assets/images/SVGs/Logo-aeroparts.svg";
 
 const Header = () => {
   // const [isOpen, setOpen] = useState(false);
@@ -38,6 +38,28 @@ const Header = () => {
   const handleQuoteClick = () => {
     navigate("/rfq");
   };
+// ...existing code...
+  const [headerLogo, setHeaderLogo] = useState<string>(logo);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    async function fetchHeaderLogo() {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_Backend_Base_Url}/footer/`, {
+          method: "GET",
+          credentials: "same-origin",
+        });
+        if (!res.ok) throw new Error("Failed to fetch header");
+        const data = await res.json();
+        // Expecting response shape: { header: { logo: "https://..." } }
+        if (data?.header?.logo) setHeaderLogo(data.header.logo);
+      } catch (err) {
+        // console.error("Error fetching header logo:", err);
+      }
+    }
+    fetchHeaderLogo();
+  }, []);
 
   return (
     <header
@@ -50,7 +72,7 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between p-4">
         <Menu></Menu>
         <Link to="/" prefetch="intent">
-          <img loading="lazy" src={logo} height={67} width={203} />
+          <img loading="lazy" src={headerLogo} height={67} width={203} />
         </Link>
         <Link to={"/rfq"} prefetch="intent" className="contents">
           <button

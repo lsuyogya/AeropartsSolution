@@ -1,17 +1,16 @@
-import React, {
+import {
   lazy,
-  Suspense,
   useEffect,
   useRef,
   useState,
-  type ChangeEvent,
+  type ChangeEvent
 } from "react";
 
 // import Slider from "../Slider.client";
 
-import skyBgImg from "../../../assets/images/Rectangle 1.png";
-import planeImg from "../../../assets/images/Plane.png";
 import cloudBgImg from "../../../assets/images/Clouds.png";
+import planeImg from "../../../assets/images/Plane.png";
+import skyBgImg from "../../../assets/images/Rectangle 1.png";
 import cloud1Img from "../../../assets/images/cloud1.png";
 import cloud2Img from "../../../assets/images/cloud2.png";
 import cloud3Img from "../../../assets/images/cloud3.png";
@@ -31,17 +30,16 @@ import cloud5Img from "../../../assets/images/cloud5.png";
 // import company12Img from "../../../assets/images/company12.png";
 // import company13Img from "../../../assets/images/company13.png";
 // import company14Img from "../../../assets/images/company14.png";
-import company1Img from "~/../assets/images/company1_new.png";
-import company2Img from "~/../assets/images/company2_new.png";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import company1Img from "~/../assets/images/company1_new.png";
+import company2Img from "~/../assets/images/company2_new.png";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 } from "~/components/ui/dialog";
 import RFQForm from "../rfq/RFQForm";
 
@@ -91,60 +89,129 @@ const Banner = ({
     cloud5Img,
   });
 
+
+const [partnerLogos, setPartnerLogos] = useState<string[]>([]);
+
+useEffect(() => {
+  let mounted = true;
+  async function fetchPartnerLogos() {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_Backend_Base_Url}/partner-logo/`, {
+        method: "GET",
+        credentials: "same-origin",
+      });
+      if (!res.ok) throw new Error(`Failed to fetch partner logos: ${res.status}`);
+      const data = await res.json();
+
+      if (mounted && Array.isArray(data.partner_logo)) {
+        setPartnerLogos(data.partner_logo.map((item: any) => item.logos).filter(Boolean));
+      }
+    } catch (err) {
+      // console.error("Error fetching partner logos:", err);
+    }
+  }
+
+  fetchPartnerLogos();
+  return () => { mounted = false; };
+}, []);
+
   // const { isLoading, isContentReady, signalReady } = usePageLoader();
+
+  // useGSAP(
+  //   () => {
+  //     // const startAnimations = () => {
+  //     // if (!isContentReady) return;
+
+  //     if (planeRef.current) {
+  //       console.log("GSAP planeRef Init");
+  //       const tlPlane = gsap.timeline();
+  //       tlPlane
+  //         .from(planeRef.current, {
+  //           xPercent: 50,
+  //           scale: 0.3,
+  //           ease: "power1.inOut",
+  //           duration: 2,
+  //         })
+  //         .to(planeRef.current, {
+  //           xPercent: 0,
+  //           scale: 1,
+  //           ease: "power1.inOut",
+  //           duration: 1,
+  //         })
+  //         .to(planeRef.current, {
+  //           yPercent: -5,
+  //           yoyo: true,
+  //           repeat: -1,
+  //           ease: "power1.inOut",
+  //           duration: 3,
+  //         });
+  //     }
+  //     // };
+  //     // // Wait for loader to be removed
+  //     // window.addEventListener("loaderRemoved", startAnimations);
+
+  //     // return () => {
+  //     //   window.removeEventListener("loaderRemoved", startAnimations);
+  //     // };
+  //   },
+  //   {
+  //     dependencies: [
+  //       planeRef.current,
+  //       // isContentReady
+  //     ],
+  //   }
+  // );
+// ...existing code...
+  // prevent re-creating the plane timeline (avoids restart after first run)
+  const tlPlaneRef = useRef<gsap.core.Timeline | null>(null);
 
   useGSAP(
     () => {
-      // const startAnimations = () => {
-      // if (!isContentReady) return;
+      if (!planeRef.current) return;
+      if (tlPlaneRef.current) return; // already initialized, don't recreate
 
-      if (planeRef.current) {
-        console.log("GSAP planeRef Init");
-        const tlPlane = gsap.timeline();
-        tlPlane
-          .from(planeRef.current, {
-            xPercent: 50,
-            scale: 0.3,
-            ease: "power1.inOut",
-            duration: 2,
-          })
-          .to(planeRef.current, {
-            xPercent: 0,
-            scale: 1,
-            ease: "power1.inOut",
-            duration: 1,
-          })
-          .to(planeRef.current, {
-            yPercent: -5,
-            yoyo: true,
-            repeat: -1,
-            ease: "power1.inOut",
-            duration: 3,
-          });
-      }
-      // };
-      // // Wait for loader to be removed
-      // window.addEventListener("loaderRemoved", startAnimations);
+      const tl = gsap.timeline();
+      tl
+        .from(planeRef.current, {
+          xPercent: 50,
+          scale: 0.3,
+          ease: "power1.inOut",
+          duration: 2,
+        })
+        .to(planeRef.current, {
+          xPercent: 0,
+          scale: 1,
+          ease: "power1.inOut",
+          duration: 1,
+        })
+        .to(planeRef.current, {
+          yPercent: -5,
+          yoyo: true,
+          repeat: -1,
+          ease: "power1.inOut",
+          duration: 3,
+        });
 
-      // return () => {
-      //   window.removeEventListener("loaderRemoved", startAnimations);
-      // };
+      tlPlaneRef.current = tl;
+
+      return () => {
+        tl.kill();
+        tlPlaneRef.current = null;
+      };
     },
     {
-      dependencies: [
-        planeRef.current,
-        // isContentReady
-      ],
+      // run once; don't re-run when refs update to avoid restarting animation
+      dependencies: [],
     }
   );
-
+// ...existing code...
   useGSAP(
     () => {
       // const startAnimations = () => {
       // if (!isContentReady) return;
 
       if (bgCloudsRef.current) {
-        console.log("GSAP bgCloud Init");
+        // console.log("GSAP bgCloud Init");
         gsap.to("img", {
           xPercent: 100,
           repeat: -1,
@@ -316,7 +383,7 @@ const Banner = ({
           className="cloudWrapper w-full h-auto min-h-[max(30vh,_10rem)] mt-auto absolute bottom-0 left-0"
           ref={cloudsRef}
         >
-          <Slider companyLogos={companyLogos}></Slider>
+          <Slider companyLogos={partnerLogos}></Slider>
 
           {cloudImges.map((img, index) => (
             <img

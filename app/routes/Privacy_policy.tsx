@@ -1,16 +1,47 @@
-import type { Route } from "./+types/Privacy_policy";
-import Banner from "~/components/Banner";
-import BannerImg from "~/../assets/images/policies-bg.jpg";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
-
+import { useLoaderData } from "react-router";
+import BannerImg from "~/../assets/images/policies-bg.jpg";
+import Banner from "~/components/Banner";
+import type { Route } from "./+types/Privacy_policy";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Privacy Policy" },
     { name: "description", content: "Privacy Policy" },
   ];
 }
-
+export interface PrivacyLoaderResponse {
+  // Define any data you expect from the loader here
+  banner_image : string | null;
+  banner_title : string ;
+  banner_description : string ;
+  content: string ;
+}
+// Client-side loader for this route.
+export async function clientLoader(): Promise<PrivacyLoaderResponse> {
+  const endpoint = `${import.meta.env.VITE_Backend_Base_Url}/policies/privacy-policy/`;
+  try {
+    const res = await fetch(endpoint, {
+      method: "GET",
+      credentials: "same-origin",
+    });
+    if (!res.ok) {
+          throw new Response("Failed to fetch index data", { status: res.status });
+    }
+    const PrivacyData = (await res.json()) as PrivacyLoaderResponse;
+    if (!PrivacyData || typeof PrivacyData.banner_title !== "string") {
+      throw new Response("Invalid index payload", { status: 502 });
+    }
+    // console.log("About Loader Data:", PrivacyData);
+    return PrivacyData;
+  }
+  catch (err) {
+    if (err instanceof Response) throw err;
+    throw new Response("Network error while fetching index data", {
+      status: 500,
+    });
+  }
+  }
 const Privacy_policy = () => {
   const data = {
     bannerTitle: "Privacy Policy",
@@ -86,13 +117,19 @@ const Privacy_policy = () => {
     +971 50 219 3737 
   </p>`,
   };
+  const PrivacyData = useLoaderData<PrivacyLoaderResponse>();
   return (
     <>
-      <Banner bgImgUrl={data.bannerImg} title={data.bannerTitle} />
+      {/* <Banner bgImgUrl={data.bannerImg} title={data.bannerTitle} /> */}
+       <Banner
+        bgImgUrl={PrivacyData.banner_image ? PrivacyData.banner_image as string : BannerImg}
+        title={PrivacyData.banner_title}
+        desc={PrivacyData.banner_description}
+      />
       <section className="bg-white">
         <div className="container mx-auto py-20 lg:py-40">
           <div className="max-w-[86ch] space-y-6 text-lg text-[#494949] policyContent">
-            {parse(DOMPurify.sanitize(data.description))}
+            {parse(DOMPurify.sanitize(PrivacyData.content))}
           </div>
         </div>
       </section>

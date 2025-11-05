@@ -43,7 +43,7 @@ export default function ContactForm() {
       formData.append("message", data.message || "");
 
       const response = await fetch(
-        `${import.meta.env.Backend_Base_Url}/contact-form/`,
+        `${import.meta.env.VITE_Backend_Base_Url}/contact-form/`,
         {
           method: "POST",
           body: formData,
@@ -55,7 +55,7 @@ export default function ContactForm() {
       }
 
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       setSubmitStatus({
         type: "success",
         message: "Message submitted successfully!",
@@ -64,7 +64,7 @@ export default function ContactForm() {
       // Reset form after success
       reset();
     } catch (error) {
-      console.error("Submission error:", error);
+      // console.error("Submission error:", error);
       setSubmitStatus({
         type: "error",
         message: "Failed to submit message. Please try again.",

@@ -53,10 +53,11 @@ const SolutionSection = ({
                 <h1 className="text-2xl font-normal">{data.title}</h1>
                 <p className="text-sm font-normal">{data.content}</p>
                 <a
-                  className={`contents ${data.link === "#" ? "invisible pointer-events-none" : null} `}
+                  className={`contents ${data.link === null  ? "invisible pointer-events-none" : null} `}
                   href={data.link}
                   target="_blank"
                 >
+              {data.link }
                   <img
                     src={arrowIcon}
                     width={32}

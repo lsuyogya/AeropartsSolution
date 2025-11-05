@@ -1,8 +1,8 @@
+import { lazy, Suspense } from "react";
 import { useLoaderData } from "react-router";
+import Loader from "~/components/ui/Loader";
 import type { Route } from "./+types/_index";
 import "./_index/style.css";
-import { lazy, Suspense, useEffect } from "react";
-import Loader from "~/components/ui/Loader";
 // import Banner from "~/components/index/Banner";
 // import SolutionSection from "~/components/index/SolutionSection";
 // import WhyUs from "~/components/index/WhyUs";
@@ -23,8 +23,8 @@ const SolutionSection = lazy(
 const WhyUs = lazy(() => import("~/components/index/WhyUs"));
 const OurFeatures = lazy(() => import("~/components/index/OurFeatures"));
 const OurLocation = lazy(() => import("~/components/index/OurLocation"));
-const data = useLoaderData<IndexLoaderResponse>();
 export default function Index() {
+  const data = useLoaderData<IndexLoaderResponse>();
   return (
     <>
       <Suspense fallback={<Loader />}>
@@ -86,7 +86,7 @@ export interface IndexLoaderResponse {
 
 // Typed Client-side loader for this route.
 export async function clientLoader(): Promise<IndexLoaderResponse> {
-  const endpoint = `${import.meta.env.Backend_Base_Url}/homepage`;
+  const endpoint = `${import.meta.env.VITE_Backend_Base_Url}/homepage`;
 
   try {
     const res = await fetch(endpoint, {
@@ -105,7 +105,7 @@ export async function clientLoader(): Promise<IndexLoaderResponse> {
     if (!data || typeof data.banner_title !== "string") {
       throw new Response("Invalid index payload", { status: 502 });
     }
-    console.log("Index data fetched:", data);
+    // console.log("Index data fetched:", data);
     return data;
   } catch (err) {
     // Convert network or other errors into a Response so the router can handle them.

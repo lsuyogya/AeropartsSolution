@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useController, useForm } from "react-hook-form";
+import { useLocation } from "react-router";
 import CountryCombobox from "../ui/CountryCombobox";
-import { useSearchParams, useLocation } from "react-router";
 
 type FormValues = {
   firstName: string;
@@ -95,7 +95,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       }
 
       const response = await fetch(
-        `${import.meta.env.Backend_Base_Url}/contact-form-rfq/`,
+        `${import.meta.env.VITE_Backend_Base_Url}/contact-form-rfq/`,
         // `https://thisisdemo.com/aeroparts/dev/wp-json/my-api/v2/contact-form-rfq/`,
         {
           method: "POST",
@@ -109,7 +109,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       }
 
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       setSubmitStatus({
         type: "success",
         message: "Quote request submitted successfully!",
@@ -288,6 +288,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
             Choose File
             <input
               type="file"
+              accept=".pdf, .doc, .docx, .xls, .xlsx, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               {...mainFileRest}
               ref={mainFileRef}
               onChange={(e) => {
@@ -313,6 +314,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
             Choose File
             <input
               type="file"
+              accept=".pdf, .doc, .docx, .xls, .xlsx, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
               {...additionalFileRest}
               ref={additionalFileRef}
               onChange={(e) => {

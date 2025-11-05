@@ -1,12 +1,13 @@
+import { useEffect, useLayoutEffect, useState } from "react";
 import footerLogoImg from "../../assets/images/FooterLogo.png";
 import footerPlaneImg from "../../assets/images/sections/plane-transparent.png";
-import { useEffect, useLayoutEffect, useState } from "react";
+import type { SocialLinks } from "./Socials";
 import Socials from "./Socials";
 
 import { Link, useLocation } from "react-router";
 
-import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 type propType = {
@@ -30,25 +31,17 @@ const Footer = ({
     type: "success" | "error" | null;
     message: string;
   }>({ type: null, message: "" });
+  const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
+const [contacts, setContacts] = useState<{ email: string; phone: string }[]>([]);
+
   const [pageHeight, setPageHeight] = useState(0);
-  const footerLocations = [
-    {
-      label: "contact@aeropartssolution.com",
-      href: "mailto:contact@aeropartssolution.com",
-    },
-    {
-      label: "+971 50 219 3737",
-      href: "tel:+971502193737",
-    },
-    {
-      label: "a.bacha@aeropartssolution.com",
-      href: "mailto:a.bacha@aeropartssolution.com",
-    },
-    {
-      label: "+971 50 536 3659",
-      href: "tel:+971505363659",
-    },
-  ];
+ const footerLocations = contacts.length
+  ? contacts.flatMap((item) => [
+      { label: item.email, href: `mailto:${item.email}` },
+      { label: item.phone, href: `tel:${item.phone}` },
+    ])
+  : [];
+
 
   const footerLinks = [
     { link: "Home", url: "/" },
@@ -71,7 +64,7 @@ const Footer = ({
       formData.append("email", email);
 
       const response = await fetch(
-        `${import.meta.env.Backend_Base_Url}/mailchimp`,
+        `${import.meta.env.VITE_Backend_Base_Url}/mailchimp`,
         {
           method: "POST",
           body: formData,
@@ -83,7 +76,7 @@ const Footer = ({
       }
 
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       setSubmitStatus({
         type: "success",
         message: "Successfully subscribed!",
@@ -92,7 +85,7 @@ const Footer = ({
       // Reset email after success
       setEmail("");
     } catch (error) {
-      console.error("Submission error:", error);
+      // console.error("Submission error:", error);
       setSubmitStatus({
         type: "error",
         message: "Failed to subscribe. Please try again.",
@@ -116,12 +109,32 @@ const Footer = ({
       }
     };
 
+
     checkFooterHeight();
     window.addEventListener("resize", checkFooterHeight);
     return () => {
       window.removeEventListener("resize", checkFooterHeight);
     };
   }, [footerRef]);
+
+useEffect(() => {
+  async function fetchFooterData() {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_Backend_Base_Url}/footer/`, {
+        method: "GET",
+        credentials: "same-origin",
+      });
+      if (!res.ok) throw new Error("Failed to fetch footer data");
+      const data = await res.json();
+      setSocialLinks(data.footer.social);
+      setContacts(data.footer.contact_no);
+    } catch (err) {
+      // console.error("Error fetching footer data:", err);
+    }
+  }
+
+  fetchFooterData();
+}, []);
 
   useEffect(() => {
     let lastHeight = document.documentElement.offsetHeight;
@@ -130,10 +143,10 @@ const Footer = ({
 
     const checkHeight = () => {
       const currentHeight = document.documentElement.offsetHeight;
-      console.log("lastHeight", lastHeight);
-      console.log("currentHeight", currentHeight);
+      // console.log("lastHeight", lastHeight);
+      // console.log("currentHeight", currentHeight);
       if (currentHeight !== lastHeight) {
-        console.log("Document offsetHeight changed:", currentHeight);
+        // console.log("Document offsetHeight changed:", currentHeight);
         lastHeight = currentHeight;
         setPageHeight(lastHeight); // trigger state change
 
@@ -145,7 +158,7 @@ const Footer = ({
 
           // Start a new 60-second interval
           intervalId = setInterval(checkHeight, 5000);
-          console.log("Interval changed to 5 seconds");
+          // console.log("Interval changed to 5 seconds");
         }
       }
     };
@@ -175,7 +188,7 @@ const Footer = ({
       )
         return;
 
-      console.log("GSAP Footer Animation Init");
+      // console.log("GSAP Footer Animation Init");
 
       const footerHeight = footerRef.current?.getBoundingClientRect().height;
       const mainContainerHeight =
@@ -196,7 +209,7 @@ const Footer = ({
           markers: false,
           onUpdate: (self) => {
             // Optional: log progress for debugging
-            console.log("Footer animation progress:", self.progress);
+            // console.log("Footer animation progress:", self.progress);
           },
           // markers: true,       // Uncomment for debugging
         },
@@ -320,7 +333,14 @@ const Footer = ({
           </div>
           <div className="footerLinkSection">
             <h2 className="text-lg text-secondary mb-4">Follow Us</h2>
-            <Socials />
+            {/* <Socials /> */}
+            {socialLinks && (
+  <Socials
+    
+    links={socialLinks}
+  />
+)}
+
           </div>
         </div>
 

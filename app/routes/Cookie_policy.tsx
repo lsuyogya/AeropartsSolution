@@ -1,8 +1,9 @@
-import type { Route } from "./+types/Cookie_policy";
-import Banner from "~/components/Banner";
-import BannerImg from "~/../assets/images/policies-bg.jpg";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
+import { useLoaderData } from "react-router";
+import BannerImg from "~/../assets/images/policies-bg.jpg";
+import Banner from "~/components/Banner";
+import type { Route } from "./+types/Cookie_policy";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -10,6 +11,38 @@ export function meta({}: Route.MetaArgs) {
     { name: "description", content: "Cookie Policy" },
   ];
 }
+export interface CookieLoaderResponse {
+  // Define any data you expect from the loader here
+  banner_image : string | null;
+  banner_title : string ;
+  banner_description : string ;
+  content: string ;
+}
+// Client-side loader for this route.
+export async function clientLoader(): Promise<CookieLoaderResponse> {
+  const endpoint = `${import.meta.env.VITE_Backend_Base_Url}/policies/cookie-policy/`;
+  try {
+    const res = await fetch(endpoint, {
+      method: "GET",
+      credentials: "same-origin",
+    });
+    if (!res.ok) {
+          throw new Response("Failed to fetch index data", { status: res.status });
+    }
+    const cookieData = (await res.json()) as CookieLoaderResponse;
+    if (!cookieData || typeof cookieData.banner_title !== "string") {
+      throw new Response("Invalid index payload", { status: 502 });
+    }
+    // console.log("About Loader Data:", cookieData);
+    return cookieData;
+  }
+  catch (err) {
+    if (err instanceof Response) throw err;
+    throw new Response("Network error while fetching index data", {
+      status: 500,
+    });
+  }
+  }
 
 const Cookie_policy = () => {
   const data = {
@@ -79,13 +112,19 @@ const Cookie_policy = () => {
   </p>
  `,
   };
+  const cookieData = useLoaderData<CookieLoaderResponse>();
   return (
     <>
-      <Banner bgImgUrl={data.bannerImg} title={data.bannerTitle} />
+      {/* <Banner bgImgUrl={data.bannerImg} title={data.bannerTitle} /> */}
+      <Banner
+        bgImgUrl={cookieData.banner_image ? cookieData.banner_image as string : BannerImg}
+        title={cookieData.banner_title}
+        desc={cookieData.banner_description}
+      />
       <section className="bg-white">
         <div className="container mx-auto py-20 lg:py-40">
           <div className="max-w-[86ch] space-y-6 text-lg text-[#494949] policyContent">
-            {parse(DOMPurify.sanitize(data.description))}
+            {parse(DOMPurify.sanitize(cookieData.content))}
           </div>
         </div>
       </section>
