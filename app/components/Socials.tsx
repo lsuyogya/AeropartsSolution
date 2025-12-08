@@ -33,8 +33,8 @@ const Socials: React.FC<SocialsProps> = ({ liClass, contextValue, links }) => {
     facebook: "#",
     twitter: "#",
     instagram: "#",
-    linkedin: "#",
-    tiktok: "#",
+    linkedin: "",
+    tiktok: "",
   };
 
   const socialsData: { icon: React.ReactNode; url: string }[] = [
@@ -48,7 +48,7 @@ const Socials: React.FC<SocialsProps> = ({ liClass, contextValue, links }) => {
   return (
     <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs">
       <IconContext.Provider value={contextValue ?? { color: "black", size: "1em" }}>
-        {socialsData.map((social, index) => (
+        {socialsData.map((social, index) => social.url && (
           <li
             key={index}
             className={`p-1 rounded-full bg-white cursor-pointer hover:scale-[1.1] transition-all ${liClass}`}

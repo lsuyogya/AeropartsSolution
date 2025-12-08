@@ -8,7 +8,7 @@ import FadeRight from "~/components/ui/FadeRight.client";
 import type { Route } from "./+types/Contact";
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Contact" },
+    { title: "Contact | Aero Part Solution" },
     { name: "description", content: "Request a quote or contact us." },
   ];
 }
@@ -88,19 +88,24 @@ const contactInfo = useLoaderData<ContactLoaderResponse>();
                 </span>
                 <span>
                   <strong className=""> Phone:</strong>
+                  <br />
                   {[contactInfo.phone_1, contactInfo.phone_2]
                   .filter(Boolean)
                   .map((phone, idx) => (
-                  <span key={idx} className={idx === 1 ? "ml-[52px]" : ""}>
-                  {phone}
-                  {idx === 0 && <br />}
-                  </span>
+                  <a href={`tel:${phone}`} key={idx} className="color-inherit hover:underline cursor-pointer">
+                    <span>
+                    {phone}
+                    {idx === 0 && <br />}
+                    </span>
+                  </a>
                   ))}
                 </span>
                 <span>
                   <strong className="font-bold">Email</strong> <br />
-                  {contactInfo.email}
-                </span>
+                    <a href={`mailto:${contactInfo.email}`} className="color-inherit hover:underline cursor-pointer">
+                        {contactInfo.email}
+                    </a>
+                  </span>
                 <span>
                   <strong className="font-bold">Working Hours</strong> <br />
                   {contactInfo.working_hours}

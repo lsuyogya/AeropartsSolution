@@ -3,6 +3,10 @@ import { AutoScroll } from "@splidejs/splide-extension-auto-scroll";
 import "@splidejs/react-splide/css";
 
 const Slider = ({ companyLogos }: { companyLogos: string[] }) => {
+  if (companyLogos.length === 0) {
+    return null;
+  }
+  
   return (
     <Splide
       aria-label="My Favorite Images"
@@ -29,7 +33,7 @@ const Slider = ({ companyLogos }: { companyLogos: string[] }) => {
             <img
               src={logo}
               alt={`Company Logo ${innerIndex + 1}`}
-              className="h-8 w-auto not-hover:grayscale transition-all"
+              className="h-8 w-auto not-hover:grayscale transition-all opacity-75"
             />
           </SplideSlide>
         ))

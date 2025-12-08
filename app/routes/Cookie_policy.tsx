@@ -7,7 +7,7 @@ import type { Route } from "./+types/Cookie_policy";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Cookie Policy" },
+    { title: "Cookie Policy | Aero Part Solution" },
     { name: "description", content: "Cookie Policy" },
   ];
 }

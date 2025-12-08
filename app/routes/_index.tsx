@@ -11,7 +11,7 @@ import "./_index/style.css";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Home" },
+    { title: "Home | Aero Part Solution" },
     { name: "description", content: "Welcome to Aerospace!" },
   ];
 }

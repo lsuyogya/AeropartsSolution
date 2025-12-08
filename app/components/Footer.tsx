@@ -348,10 +348,12 @@ useEffect(() => {
           <p>
             &copy; {new Date().getFullYear()} Aeroparts. All rights reserved.
           </p>
-          <p>
-            Design with <span className=" text-red-600"> &#x2764; </span> by
-            Fifth Design
-          </p>
+          <a href="https://thefifthdesigns.com/" target="_blank" rel="noopener noreferrer" className="hover:underline color-inherit contents">
+            <p>
+              Design with <span className=" text-red-600"> &#x2764; </span> by
+              Fifth Design
+            </p>
+          </a>
         </div>
       </div>
     </footer>

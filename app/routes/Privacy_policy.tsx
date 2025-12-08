@@ -6,7 +6,7 @@ import Banner from "~/components/Banner";
 import type { Route } from "./+types/Privacy_policy";
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Privacy Policy" },
+    { title: "Privacy Policy | Aero Part Solution" },
     { name: "description", content: "Privacy Policy" },
   ];
 }

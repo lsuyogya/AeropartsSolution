@@ -7,7 +7,7 @@ import FadeUp from "~/components/ui/FadeUp.client";
 import type { Route } from "./+types/RFQ";
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Request for Quote" },
+    { title: "Request for Quote | Aero Part Solution" },
     { name: "description", content: "Request a quote or contact us." },
   ];
 }
@@ -83,10 +83,14 @@ const contactInfo = useLoaderData<RfqLoaderResponse>();
                   {[contactInfo.phone_1, contactInfo.phone_2]
                     .filter(Boolean)
                     .map((phone, idx) => (
-                      <span key={idx}>{phone}</span>
+                      <a href={`tel:${phone}`} key={idx} className="color-inherit hover:underline contents">
+                        <span key={idx} className="hover:underline cursor-pointer">{phone}</span>
+                      </a>
                     ))}
                 </span>
-                <span>{contactInfo.email}</span>
+                <a href={`mailto:${contactInfo.email}`} className="color-inherit hover:underline contents">
+                  <span className="hover:underline cursor-pointer">{contactInfo.email}</span>
+                </a>
               </p>
             </div>
           </FadeRight>

@@ -31,7 +31,7 @@ import FadeRight from "~/components/ui/FadeRight.client";
 import FadeUp from "~/components/ui/FadeUp.client";
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "About" }, { name: "description", content: "About Us" }];
+  return [{ title: "About | Aero Part Solution" }, { name: "description", content: "About Us" }];
 }
 export interface AboutLoaderResponse {
   // Define any data you expect from the loader here

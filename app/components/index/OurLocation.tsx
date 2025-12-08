@@ -1,4 +1,4 @@
-import mapImg from "../../../assets/images/new-map.png";
+import mapVid from "../../../assets/videos/map.mp4";
 import FadeLeft from "../ui/FadeLeft.client";
 import FadeRight from "../ui/FadeRight.client";
 
@@ -31,7 +31,7 @@ const OurLocation = () => {
           </div>
         </FadeRight>
         <FadeLeft className="max-lg:mt-6">
-          <img src={mapImg} alt="" />
+          <video src={mapVid} autoPlay muted loop />
         </FadeLeft>
       </div>
     </section>

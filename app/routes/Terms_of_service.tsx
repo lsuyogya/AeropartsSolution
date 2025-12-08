@@ -7,7 +7,7 @@ import type { Route } from "./+types/Terms_of_service";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Terms Of Service" },
+    { title: "Terms Of Service | Aero Part Solution" },
     { name: "description", content: "Terms of Service" },
   ];
 }
