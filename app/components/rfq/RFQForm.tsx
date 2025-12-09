@@ -146,7 +146,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
     >
       <div className="grid grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             First Name*
           </label>
           <input
@@ -158,7 +158,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             Last Name
           </label>
           <input
@@ -169,7 +169,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Company Name*
         </label>
         <input
@@ -182,7 +182,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Email Address*
         </label>
         <input
@@ -194,7 +194,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Phone Number
         </label>
         <input
@@ -205,7 +205,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Country / Region*
         </label>
         <CountryCombobox
@@ -223,7 +223,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
 
       <div className="grid grid-cols-2 gap-4 mt-12">
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             Aircraft Type / Model
           </label>
           <input
@@ -232,7 +232,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             Part Number(s)
           </label>
           <input
@@ -244,7 +244,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             Quantity Required
           </label>
           <input
@@ -254,7 +254,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             Priority
           </label>
           <select
@@ -269,7 +269,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Description of Part(s)
         </label>
         <textarea
@@ -280,7 +280,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Upload your parts list / RFP
         </label>
         <div className="flex items-center gap-3">
@@ -306,7 +306,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Upload your parts list / RFP - additional
         </label>
         <div className="flex items-center gap-3">
@@ -337,7 +337,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
             type="checkbox"
             {...register("confirmDetails", { required: true })}
           />
-          <span className="ml-2 text-[#464646]">
+          <span className="ml-2 text-text-grey">
             I confirm all part details are correct
           </span>
           {errors.confirmDetails && (
@@ -349,7 +349,7 @@ export default function RFQForm(formClass: { formClass?: string }) {
             type="checkbox"
             {...register("agreeTerms", { required: true })}
           />
-          <span className="ml-2 text-[#464646]">
+          <span className="ml-2 text-text-grey">
             I agree to the{" "}
             <a href="/terms_of_conditions" className="text-black underline">
               Terms & Conditions

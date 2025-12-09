@@ -108,10 +108,10 @@ const CountryCombobox = forwardRef<HTMLButtonElement, CountryComboboxProps>(
             {selectedCountry ? (
               <>
                 <span className="text-base">{selectedCountry.flag}</span>
-                <span className="text-[#464646]">{selectedCountry.label}</span>
+                <span className="text-text-grey">{selectedCountry.label}</span>
               </>
             ) : (
-              <span className="text-[#464646]">{placeholder}</span>
+              <span className="text-text-grey">{placeholder}</span>
             )}
           </span>
           <div className="flex items-center gap-1">
@@ -159,7 +159,7 @@ const CountryCombobox = forwardRef<HTMLButtonElement, CountryComboboxProps>(
                   >
                     <span className="flex items-center gap-2 truncate">
                       <span className="text-base">{country.flag}</span>
-                      <span className="text-[#464646]">{country.label}</span>
+                      <span className="text-text-grey">{country.label}</span>
                     </span>
                     {country.value === value && (
                       <Check className="w-4 h-4 text-blue-600 flex-shrink-0" />

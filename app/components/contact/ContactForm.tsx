@@ -81,7 +81,7 @@ export default function ContactForm() {
     >
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             First Name*
           </label>
           <input
@@ -93,7 +93,7 @@ export default function ContactForm() {
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-[#464646] mb-2">
+          <label className="block text-sm font-medium text-text-grey mb-2">
             Last Name
           </label>
           <input
@@ -104,7 +104,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Company Name*
         </label>
         <input
@@ -117,7 +117,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Email Address*
         </label>
         <input
@@ -129,7 +129,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Phone Number*
         </label>
         <input
@@ -141,7 +141,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Subject*
         </label>
         <select
@@ -158,7 +158,7 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#464646] mb-2">
+        <label className="block text-sm font-medium text-text-grey mb-2">
           Message
         </label>
         <textarea

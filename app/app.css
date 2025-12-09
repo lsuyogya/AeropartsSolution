@@ -78,6 +78,7 @@
   --color-primary: #1a2e45;
   --color-secondary: #e1a730;
   --color-grey: #eeeeee;
+  --color-text-grey: #464646;
 }
 
 html,
@@ -90,6 +91,7 @@ body {
   font-family: var(--font-lato);
   accent-color: var(--color-secondary);
   caret-color: var(--color-secondary);
+  background-color: var(--color-primary);
 }
 
 ::selection {
