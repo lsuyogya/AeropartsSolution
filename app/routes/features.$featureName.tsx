@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { useLoaderData } from "react-router";
 import Loader from "~/components/ui/Loader";
-import type { Route } from "./+types/services._index";
+import type { Route } from "./+types/features.$featureName";
 import Banner from "~/components/Banner";
 import bannerImg from "~/../assets/images/sections/service-banner.jpg";
 import Service2col2title from "~/components/services/Service2col2title";
@@ -11,7 +11,7 @@ import DOMPurify from "isomorphic-dompurify";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Services | Aero Part Solution" },
+    { title: "Features | Aero Part Solution" },
     { name: "description", content: "Service Details" },
   ];
 }
