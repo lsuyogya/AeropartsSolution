@@ -9,6 +9,7 @@ import RibbonSection from "~/components/services/RibbonSection";
 import Service2col1title from "~/components/services/Service2col1title";
 import Benefits from "~/components/services/Benefits";
 import plane from "~/../assets/images/sections/b2c-plane-transparent.png";
+import type { B2BServiceData } from "./services.B2b";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "B2C | Aero Part Solution" },
@@ -16,7 +17,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-const data = {
+const data_old = {
   banner_bg_img: bannerImg,
   banner_title: "B2C Private Aviation Support",
   banner_subtitle: "Premium supply for private jet & VIP aircraft owners.",
@@ -56,33 +57,68 @@ const data = {
   benefitsImg: benefitsImg,
 };
 
+// Typed Client-side loader for this route.
+export async function clientLoader(): Promise<B2BServiceData> {
+  const endpoint = `${import.meta.env.VITE_Backend_Base_Url}/service/b2c`;
+
+  try {
+    const res = await fetch(endpoint, {
+      method: "GET",
+      credentials: "same-origin",
+    });
+
+    if (!res.ok) {
+      // Let React Router surface the HTTP error status
+      throw new Response("Failed to fetch index data", { status: res.status });
+    }
+
+    const data = (await res.json()) as B2BServiceData;
+
+    // Basic runtime validation: ensure required top-level keys exist.
+    if (!data || typeof data.banner_title !== "string") {
+      throw new Response("Invalid index payload", { status: 502 });
+    }
+    // console.log("Index data fetched:", data);
+    return data;
+  } catch (err) {
+    // Convert network or other errors into a Response so the router can handle them.
+    if (err instanceof Response) throw err;
+    throw new Response("Network error while fetching index data", {
+      status: 500,
+    });
+  }
+}
+
 const B2c = () => {
+  const data = useLoaderData<B2BServiceData>();
   return (
     <>
-      <Banner
-        bgImgUrl={data.banner_bg_img}
-        title={data.banner_title}
-        desc={data.banner_subtitle}
-      />
-      <RibbonSection
-        title={data.RibbonTitle}
-        desc={data.RibbonDescription}
-        cta={data.RibbonCtaText}
-        img={data.RibbonPlaneImg}
-      />
-      <Service2col1title
-        title={data.serviceDescTitleText}
-        desc={data.serviceDescDescription}
-        content={data.serviceDescListText}
-        listTitle={data.serviceDescListTitle}
-      ></Service2col1title>
-      <Benefits
-        title1={data.benefitTitleText1}
-        title2={data.benefitTitleText2}
-        content1={data.benefitListText1}
-        content2={data.benefitListText2}
-        img={data.benefitsImg}
-      ></Benefits>
+      <Suspense fallback={<Loader />}>
+        <Banner
+          bgImgUrl={data.banner_bg_img}
+          title={data.banner_title}
+          desc={data.banner_subtitle}
+        />
+        <RibbonSection
+          title={data.RibbonTitle}
+          desc={data.RibbonDescription}
+          cta={data.RibbonCtaText}
+          img={data.RibbonPlaneImg}
+        />
+        <Service2col1title
+          title={data.serviceDescTitleText}
+          desc={data.serviceDescDescription}
+          content={data.serviceDescListText}
+          listTitle={data.serviceDescListTitle}
+        ></Service2col1title>
+        <Benefits
+          title1={data.benefitTitleText1}
+          title2={data.benefitTitleText2}
+          content1={data.benefitListText1}
+          content2={data.benefitListText2}
+          img={data.benefitsImg}
+        ></Benefits>
+      </Suspense>
     </>
   );
 };

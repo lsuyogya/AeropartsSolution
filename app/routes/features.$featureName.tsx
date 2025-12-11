@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useParams } from "react-router";
 import Loader from "~/components/ui/Loader";
 import type { Route } from "./+types/features.$featureName";
 import Banner from "~/components/Banner";
@@ -9,13 +9,68 @@ import Service2col1title from "~/components/services/Service2col1title";
 import parse from "html-react-parser";
 import DOMPurify from "isomorphic-dompurify";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ params }: Route.MetaArgs) {
+  console.log(params.featureName);
   return [
-    { title: "Features | Aero Part Solution" },
+    { title: `Features - ${params.featureName} | Aero Part Solution` },
     { name: "description", content: "Service Details" },
   ];
 }
-const data = {
+
+interface featureData {
+  banner_bg_img: string; // or the actual type of bannerImg if not a string
+  banner_title: string;
+  banner_subtitle: string;
+
+  CenterTxtSectionTitle: string;
+  CenterTxtSectionDescription: string;
+
+  serviceDescTitleText1: string;
+  serviceDescListText1: { list: string }[];
+
+  serviceDescTitleText2: string;
+  serviceDescListText2: { list: string }[];
+
+  serviceListTitle: string;
+  serviceListDesc: string;
+  serviceListText: { list: string }[];
+}
+
+// Typed Client-side loader for this route.
+export async function clientLoader({
+  params,
+}: Route.ClientLoaderArgs): Promise<featureData> {
+  const endpoint = `${import.meta.env.VITE_Backend_Base_Url}/features/${params.featureName}`;
+
+  try {
+    const res = await fetch(endpoint, {
+      method: "GET",
+      credentials: "same-origin",
+    });
+
+    if (!res.ok) {
+      // Let React Router surface the HTTP error status
+      throw new Response("Failed to fetch index data", { status: res.status });
+    }
+
+    const data = (await res.json()) as featureData;
+
+    // Basic runtime validation: ensure required top-level keys exist.
+    if (!data || typeof data.banner_title !== "string") {
+      throw new Response("Invalid index payload", { status: 502 });
+    }
+    // console.log("Index data fetched:", data);
+    return data;
+  } catch (err) {
+    // Convert network or other errors into a Response so the router can handle them.
+    if (err instanceof Response) throw err;
+    throw new Response("Network error while fetching index data", {
+      status: 500,
+    });
+  }
+}
+
+const data_default = {
   banner_bg_img: bannerImg,
   banner_title: "Airframe Components",
   banner_subtitle:
@@ -54,6 +109,7 @@ const data = {
 };
 
 const B2b = () => {
+  const data = useLoaderData<featureData>();
   return (
     <>
       <Banner
