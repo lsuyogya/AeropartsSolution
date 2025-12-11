@@ -19,7 +19,7 @@ const Banner = ({ bgImgUrl, title, desc }: bannerProps) => {
 
   return (
     <section
-      className="banner min-h-[90vh] flex -mt-[var(--headerHeight,_100px)] relative"
+      className="banner min-h-[90vh] flex -mt-[var(--headerHeight,_100px)] relative bg-primary"
       style={{ backgroundImage: `url(${bgImgUrl})` }}
     >
       {/* bg-blue-800/20 */}

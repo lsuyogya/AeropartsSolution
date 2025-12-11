@@ -56,7 +56,7 @@ const SolutionSection = ({
                 <a
                   className={`contents ${data.link === "" ? "invisible pointer-events-none" : null} `}
                   href={data.link}
-                  target="_blank"
+                  target={data.link.includes("http") ? "_blank" : "_self"}
                 >
                   <img
                     src={arrowIcon}
