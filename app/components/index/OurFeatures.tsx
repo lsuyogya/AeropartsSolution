@@ -88,16 +88,13 @@ const OurFeatures = ({
         <div className="container mx-auto details grid lg:grid-cols-3 gap-10 mt-6">
           {data.featuresData.map((data, index) => (
             <FadeUp delay={delayTimer * (index + 1)} key={data.title}>
-              <div className="featureCard bg-light flex flex-col gap-4 px-12 py-8 hover:shadow-lg transition-all">
-                <img
-                  src={typeof data.image === "string" ? data.image : ""}
-                  alt=""
-                  height={60}
-                  width={60}
-                />
-                <h2 className="text-2xl font-normal">{data.title}</h2>
-                <p className="text-sm font-normal">{data.description}</p>
-              </div>
+              {data.link ? (
+                <a href={data.link} className="contents">
+                  <FeatureCard data={data} />
+                </a>
+              ) : (
+                <FeatureCard data={data} />
+              )}
             </FadeUp>
           ))}
         </div>
@@ -107,3 +104,20 @@ const OurFeatures = ({
 };
 
 export default OurFeatures;
+
+const FeatureCard = ({ data }: { data: IndexSection3Content }) => {
+  return (
+    <div
+      className={`featureCard bg-light flex flex-col gap-4 px-12 py-8 hover:shadow-lg transition-all ${data.link && "cursor-pointer"}`}
+    >
+      <img
+        src={typeof data.image === "string" ? data.image : ""}
+        alt=""
+        height={60}
+        width={60}
+      />
+      <h2 className="text-2xl font-normal">{data.title}</h2>
+      <p className="text-sm font-normal">{data.description}</p>
+    </div>
+  );
+};

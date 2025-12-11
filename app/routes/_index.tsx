@@ -68,6 +68,7 @@ export type IndexSection3Content = {
   image: boolean | string;
   title: string;
   description: string;
+  link: string;
 };
 
 export interface IndexLoaderResponse {
