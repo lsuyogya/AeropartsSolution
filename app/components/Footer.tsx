@@ -32,16 +32,17 @@ const Footer = ({
     message: string;
   }>({ type: null, message: "" });
   const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
-const [contacts, setContacts] = useState<{ email: string; phone: string }[]>([]);
+  const [contacts, setContacts] = useState<{ email: string; phone: string }[]>(
+    []
+  );
 
   const [pageHeight, setPageHeight] = useState(0);
- const footerLocations = contacts.length
-  ? contacts.flatMap((item) => [
-      { label: item.email, href: `mailto:${item.email}` },
-      { label: item.phone, href: `tel:${item.phone}` },
-    ])
-  : [];
-
+  const footerLocations = contacts.length
+    ? contacts.flatMap((item) => [
+        { label: item.email, href: `mailto:${item.email}` },
+        { label: item.phone, href: `tel:${item.phone}` },
+      ])
+    : [];
 
   const footerLinks = [
     { link: "Home", url: "/" },
@@ -52,6 +53,32 @@ const [contacts, setContacts] = useState<{ email: string; phone: string }[]>([])
     { link: "Terms of Service", url: "/terms_of_service" },
     { link: "Privacy Policy", url: "/privacy_policy" },
     { link: "Cookie Policy", url: "/cookie_policy" },
+  ];
+
+  const footerServices = [
+    { link: "B2B", url: "/services/b2b" },
+    { link: "B2C", url: "/services/b2c" },
+    { link: "Airframe Components", url: "/features/airframe-components" },
+    {
+      link: "Avionics & Instruments",
+      url: "/features/avionics-instruments",
+    },
+    {
+      link: "Engine Parts & Accessories",
+      url: "/features/engine-parts-accessories",
+    },
+    {
+      link: "Landing Gear Systems",
+      url: "/features/landing-gear-systems",
+    },
+    {
+      link: "Cabin Interior Equipment",
+      url: "/features/cabin-interior-equipment",
+    },
+    {
+      link: "Consumables & Rotables",
+      url: "/features/consumables-rotables",
+    },
   ];
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
@@ -109,7 +136,6 @@ const [contacts, setContacts] = useState<{ email: string; phone: string }[]>([])
       }
     };
 
-
     checkFooterHeight();
     window.addEventListener("resize", checkFooterHeight);
     return () => {
@@ -117,24 +143,27 @@ const [contacts, setContacts] = useState<{ email: string; phone: string }[]>([])
     };
   }, [footerRef]);
 
-useEffect(() => {
-  async function fetchFooterData() {
-    try {
-      const res = await fetch(`${import.meta.env.VITE_Backend_Base_Url}/footer/`, {
-        method: "GET",
-        credentials: "same-origin",
-      });
-      if (!res.ok) throw new Error("Failed to fetch footer data");
-      const data = await res.json();
-      setSocialLinks(data.footer.social);
-      setContacts(data.footer.contact_no);
-    } catch (err) {
-      // console.error("Error fetching footer data:", err);
+  useEffect(() => {
+    async function fetchFooterData() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_Backend_Base_Url}/footer/`,
+          {
+            method: "GET",
+            credentials: "same-origin",
+          }
+        );
+        if (!res.ok) throw new Error("Failed to fetch footer data");
+        const data = await res.json();
+        setSocialLinks(data.footer.social);
+        setContacts(data.footer.contact_no);
+      } catch (err) {
+        // console.error("Error fetching footer data:", err);
+      }
     }
-  }
 
-  fetchFooterData();
-}, []);
+    fetchFooterData();
+  }, []);
 
   useEffect(() => {
     let lastHeight = document.documentElement.offsetHeight;
@@ -332,15 +361,22 @@ useEffect(() => {
             </ul>
           </div>
           <div className="footerLinkSection">
+            <h2 className="text-lg text-secondary">We Offer</h2>
+            <ul className="grid grid-cols-2 gap-x-8 gap-y-3 mt-4 text-xs">
+              {footerServices.map((link) => (
+                <li key={link.link}>
+                  <Link to={link.url} className="group">
+                    {" "}
+                    - <span className="group-hover:underline">{link.link}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="footerLinkSection">
             <h2 className="text-lg text-secondary mb-4">Follow Us</h2>
             {/* <Socials /> */}
-            {socialLinks && (
-  <Socials
-    
-    links={socialLinks}
-  />
-)}
-
+            {socialLinks && <Socials links={socialLinks} />}
           </div>
         </div>
 
@@ -348,7 +384,12 @@ useEffect(() => {
           <p>
             &copy; {new Date().getFullYear()} Aeroparts. All rights reserved.
           </p>
-          <a href="https://thefifthdesigns.com/" target="_blank" rel="noopener noreferrer" className="hover:underline color-inherit contents">
+          <a
+            href="https://thefifthdesigns.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline color-inherit contents"
+          >
             <p>
               Design with <span className=" text-red-600"> &#x2764; </span> by
               Fifth Design
