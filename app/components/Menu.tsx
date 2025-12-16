@@ -28,7 +28,6 @@ const Menu = () => {
   const menuItems: MenuItem[] = [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
-    { label: "RFQ", href: "/rfq" },
     {
       label: "Services",
       children: [
@@ -62,6 +61,7 @@ const Menu = () => {
         },
       ],
     },
+    { label: "RFQ", href: "/rfq" },
     { label: "Contact Us", href: "/contact" },
   ];
 
